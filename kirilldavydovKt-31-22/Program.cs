@@ -1,3 +1,4 @@
+using kirilldavydovKt_31_22.Middlewares;
 using kirilldavydovKt_31_22.Data;
 using kirilldavydovKt_31_22.Services;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ try
     builder.Services.AddScoped<IStudentService, StudentService>();
 
     var app = builder.Build();
+    app.UseMiddleware<ExceptionHandlerMiddleware>();
 
     if (app.Environment.IsDevelopment())
     {
@@ -35,6 +37,7 @@ try
         app.UseSwaggerUI();
     }
 
+    app.MapGet("/", () => Results.Redirect("/swagger"));
     app.UseAuthorization();
     app.MapControllers();
     app.Run();
