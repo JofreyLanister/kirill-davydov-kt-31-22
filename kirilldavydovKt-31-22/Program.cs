@@ -1,11 +1,16 @@
 using NLog;
 using NLog.Web;
+using Microsoft.EntityFrameworkCore;
+using kirilldavydovKt_31_22.Data;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
